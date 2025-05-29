@@ -1,0 +1,76 @@
+/* resume-colors.css */
+
+/* Backgrounds */
+.bg-gray-100 {
+    background-color: #f3f4f6 !important; /* fallback for bg-gray-100 */
+  }
+  
+  .bg-white {
+    background-color: #ffffff !important; /* fallback for bg-white */
+  }
+  
+  .bg-gray-200 {
+    background-color: #e5e7eb !important; /* for skill tags */
+  }
+  
+  /* Text colors */
+  .text-gray-800 {
+    color: #1f2937 !important;
+  }
+  
+  .text-gray-700 {
+    color: #374151 !important;
+  }
+  
+  .text-gray-600 {
+    color: #4b5563 !important;
+  }
+  
+  .text-gray-500 {
+    color: #6b7280 !important;
+  }
+
+  /* Background colors */
+.bg-gray-100 {
+  background-color: #f3f4f6 !important;
+}
+
+.bg-white {
+  background-color: #ffffff !important;
+}
+
+.bg-gray-800 {
+  background-color: #1f2937 !important;
+}
+
+/* Text colors */
+.text-white {
+  color: #ffffff !important;
+}
+
+.text-gray-300 {
+  color: #d1d5db !important;
+}
+
+.text-gray-500 {
+  color: #6b7280 !important;
+}
+
+.text-gray-600 {
+  color: #4b5563 !important;
+}
+
+.text-gray-700 {
+  color: #374151 !important;
+}
+
+.text-gray-800 {
+  color: #1f2937 !important;
+}
+
+/* Border colors */
+.border-gray-600 {
+  border-color: #4b5563 !important;
+}
+
+  
