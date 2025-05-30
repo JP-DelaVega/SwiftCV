@@ -5,7 +5,7 @@ import { useLoginMutation } from '../slices/UsersApiSlice';
 import { setCredentials } from '../slices/authSlice';
 
 import { toast } from 'react-toastify';
-const Login = ({ onLogin }) => {
+const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -25,10 +25,9 @@ const Login = ({ onLogin }) => {
     }
   }, [userinfo, navigate, redirect]);
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    console.log('Login submitted with:');
     try {
       const res = await login({ email, password }).unwrap();
       dispatch(setCredentials({ ...res }));
@@ -47,7 +46,7 @@ const Login = ({ onLogin }) => {
         
         <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">Welcome to SwiftCV</h2>
 
-        <form onSubmit={handleSubmit}>
+        <form>
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-600 mb-1">Email</label>
             <input
@@ -74,10 +73,28 @@ const Login = ({ onLogin }) => {
 
           <button
             type="submit"
+            onClick={handleSubmit}
+            disabled={isLoading}
             className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
           >
-            Login
+            Sign In
           </button>
+          { isLoading && (
+            <div className="mt-4 text-center">
+              <span className="text-gray-600">Loading...</span>
+            </div>
+          )}
+           <div className="w-full text-center mt-4 flex justify-center items-center space-x-2">
+            <p className="text-gray-600">Don't have an account?</p>
+          <button
+            type="submit"
+            onClick={() => navigate(redirect?`/register?redirect=${redirect}`:'/register')}
+            disabled={isLoading}
+            className="text-grey py-2 text-blue-500 hover:text-red-500 transition"
+          >
+            Register
+          </button>
+          </div>
         </form>
       </div>
     </div>

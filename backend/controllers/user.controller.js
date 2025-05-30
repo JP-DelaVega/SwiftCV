@@ -12,9 +12,6 @@ const authUser = asyncHandler(async (req, res) => {
 
   if (user && (await user.matchPassword(password))) {
     generateToken(res, user._id);
-    
-
-
     res.status(200).json({
       _id: user._id,
       name: user.name,
@@ -39,7 +36,6 @@ const registerUser = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error('User already exists');
   }
-
   const user = await User.create({
     name,
     email,

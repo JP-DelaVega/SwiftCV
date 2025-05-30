@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import { useGetUserDetailsQuery } from "../slices/userDetailsSlice";
 function Homepage() {
   const { data: userDetails, isLoading, error } = useGetUserDetailsQuery();
-  console.log("User Details:", userDetails);
  
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 pt-24 px-4 text-center">

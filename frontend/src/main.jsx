@@ -11,6 +11,7 @@ import ResumeList from "./screens/ResumeList.jsx";
 import PageNotFound from "./screens/PageNotFound.jsx";
 import ResumeDetails from "./screens/ResumeDetails.jsx";
 import Login from "./screens/Login.jsx";
+import Register from "./screens/Register.jsx";
 import ResumeTemplate_1 from "./ResumeTemplates/ResumeTemplate_1.jsx";
 import ResumeTemplate_2 from "./ResumeTemplates/ResumeTemplate_2.jsx";
 import ResumeTemplate_3 from "./ResumeTemplates/ResumeTemplate_3.jsx";
@@ -23,6 +24,11 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
+    errorElement: <div>Oops! Something went wrong.</div>,
+  },
+  {
+    path: "/Register",
+    element: <Register />,
     errorElement: <div>Oops! Something went wrong.</div>,
   },
   {
