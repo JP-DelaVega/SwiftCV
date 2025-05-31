@@ -61,6 +61,9 @@ const resumeSlice = createSlice({
     removeCertification: (state, action) => {
       state.formData.certifications.splice(action.payload, 1);
     },
+    setFormData: (state, action) => {
+  state.formData = action.payload;
+}
   },
   
 });
@@ -68,6 +71,7 @@ const resumeSlice = createSlice({
 
 
 export const {
+  setFormData,
   updatePersonalInfo,
   updateSkills,
   updateJob,
