@@ -27,4 +27,4 @@ export const userApiSlice = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useGetUserDetailsQuery } = userApiSlice;
+export const { useGetUserDetailsQuery, useGetUserDetailsByUserIdQuery,useCreateUserDetailsMutation } = userApiSlice;
