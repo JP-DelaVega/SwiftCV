@@ -7,6 +7,7 @@ import CertificationForm from "../Forms/CertificationsForm";
 import ResumeList from "./ResumeList";
 import { useSelector, useDispatch } from "react-redux";
 import { useGetUserDetailsByUserIdQuery } from "../slices/userDetailsSlice.js";
+import {useCreateUserDetailsMutation} from "../slices/userDetailsSlice";
 import {
   updatePersonalInfo,
   updateSkills,
@@ -27,7 +28,9 @@ const ResumeDetails = () => {
 
   // Hooks must be here, inside component body
   const { userInfo } = useSelector((state) => state.auth);
-  const { data, isLoading, error } = useGetUserDetailsByUserIdQuery(userInfo._id);
+  const { data, isLoading, error } = useGetUserDetailsByUserIdQuery(
+    userInfo._id
+  );
 
   // Get redux form data
   const { formData: reduxFormData } = useSelector((state) => state.resume);
@@ -39,26 +42,34 @@ const ResumeDetails = () => {
   const educationRef = useRef();
   const certificationRef = useRef();
 
- const blankUserDetails = {
-  personalInformation: {
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-  },
-  professionalSummary: [],
-  skills: [],
-  education: [],
-  certifications: [],
-};
+  const blankUserDetails = {
+    personalInformation: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      phone: "",
+    },
+    professionalSummary: [
+      {
+        jobTitle: "",
+        company: "",
+        startDate: "",
+        endDate: "",
+        description: "",
+      },
+    ],
+    skills: [],
+    education: [{ degree: "", institution: "", startDate: "", endDate: "" }],
+    certifications: [{ name: "", institution: "", date: "" }],
+  };
 
-useEffect(() => {
-  if (data && data.data) {
-    dispatch(setFormData(data.data)); // update Redux form with fetched data
-  } else {
-    dispatch(setFormData(blankUserDetails)); // dispatch blank if no data
-  }
-}, [data, dispatch]);
+  useEffect(() => {
+    if (data && data.data) {
+      dispatch(setFormData(data.data)); // update Redux form with fetched data
+    } else {
+      dispatch(setFormData(blankUserDetails)); // dispatch blank if no data
+    }
+  }, [data, dispatch]);
   // ... rest of your handlers and component logic
 
   if (isLoading) return <p>Loading user details...</p>;
@@ -134,9 +145,11 @@ useEffect(() => {
     dispatch(removeCertification(index));
   };
 
+  const handleSaveorUpdate = () => {
+
+  };
   return (
     <>
-      
       <Navbar />
       {activeTab === 0 && (
         <PersonalInformationForms
@@ -180,14 +193,25 @@ useEffect(() => {
           <button
             onClick={prevTab}
             disabled={activeTab <= 0}
-            className="bg-gray-300 px-4 py-2 rounded"
+            className={`px-4 py-2 rounded transition 
+    ${
+      activeTab <= 0
+        ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+        : "bg-gray-300 hover:bg-gray-400"
+    }`}
           >
             Back
           </button>
+
           <button
             onClick={nextTab}
             disabled={activeTab >= 4}
-            className="bg-blue-500 text-white px-4 py-2 rounded"
+            className={`px-4 py-2 rounded transition 
+    ${
+      activeTab >= 4
+        ? "bg-blue-200 text-blue-500 cursor-not-allowed"
+        : "bg-blue-500 text-white hover:bg-blue-600"
+    }`}
           >
             Next
           </button>

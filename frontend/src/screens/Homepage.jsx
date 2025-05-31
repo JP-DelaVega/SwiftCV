@@ -1,9 +1,7 @@
 import React from "react";
 import resume from "../assets/resume.png";
 import { Link } from "react-router-dom";
-import { useGetUserDetailsQuery } from "../slices/userDetailsSlice";
 function Homepage() {
-  const { data: userDetails, isLoading, error } = useGetUserDetailsQuery();
  
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 pt-24 px-4 text-center">

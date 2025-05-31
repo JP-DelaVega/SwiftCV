@@ -1,8 +1,8 @@
-import React, { useState, forwardRef, useImperativeHandle } from "react";
+import React, { useState, forwardRef, useImperativeHandle ,useEffect} from "react";
 import { toast } from "react-toastify";
 const PersonalInformationForms = forwardRef(
   ({ handleChangeSkills, handleChangePersonalInformation, formData }, ref) => {
-    const [skills, setSkills] = useState(formData.skills || []);
+    const [skills, setSkills] = useState([]);
     const [skillInput, setSkillInput] = useState("");
 
     // Error state for individual fields
@@ -17,6 +17,11 @@ const PersonalInformationForms = forwardRef(
         draggable: true,
       });
     };
+    useEffect(() => {
+      if (formData.skills) {
+        setSkills(formData.skills);
+      }
+    }, [formData.skills]);
     useImperativeHandle(ref, () => ({
       validate: () => {
         const newErrors = {};
@@ -37,7 +42,7 @@ const PersonalInformationForms = forwardRef(
     const addSkill = () => {
       if (!skillInput.trim()) {
         notify();
-        return; 
+        return;
       }
       const trimmed = skillInput.trim();
       if (!trimmed) return;
