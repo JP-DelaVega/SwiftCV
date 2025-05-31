@@ -18,9 +18,9 @@ export const exportComponent = (node, filename = "download.pdf") => {
       // Calculate height to maintain aspect ratio
       let pdfWidth = pdfPageWidth;
       let pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-  
+      
       // If the height is bigger than PDF page height, scale it down
-      if (pdfHeight > pdfPageHeight) {
+      if (pdfHeight > pdfPageHeight) {5
         pdfHeight = pdfPageHeight;
         pdfWidth = (imgProps.width * pdfHeight) / imgProps.height;
       }

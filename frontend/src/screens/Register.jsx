@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useRegisterMutation } from "../slices/UsersApiSlice";
 import { setCredentials } from "../slices/authSlice";
-
 import { toast } from "react-toastify";
+import { motion } from "framer-motion";
+
 const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -43,10 +44,16 @@ const Register = () => {
       }
     }
   };
-
+  const slideAnimation = {
+    initial: { x: "-100%", opacity: 0 },
+    animate: { x: 0, opacity: 1 },
+    exit: { x: "100%", opacity: 0 },
+    transition: { duration: 0.5, ease: "easeInOut" },
+  };
+  
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
-      <div className="bg-white p-10 rounded-2xl shadow-lg w-full max-w-md">
+      <motion.div {...slideAnimation} className="bg-white p-10 rounded-2xl shadow-lg w-full max-w-md">
         {/* SwiftCV Logo/Image */}
 
         <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">
@@ -138,7 +145,7 @@ const Register = () => {
             </button>
           </div>
         </form>
-      </div>
+      </motion.div >
     </div>
   );
 };
