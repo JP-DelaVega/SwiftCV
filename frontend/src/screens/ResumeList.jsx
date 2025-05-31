@@ -46,8 +46,8 @@ const Carousel = () => {
   return (
     <>
       <Navbar />
-      <div className="relative w-full h-screen flex justify-center items-center">
-        <div className="w-full h-full flex justify-center items-center relative mt-12">
+      <div className=" relative w-full h-screen flex justify-center items-center">
+        <div className=" w-full h-full flex justify-center items-center relative mt-12">
           <div className="w-full h-full flex justify-center items-center transition-filter duration-300">
             <AnimatePresence mode="wait">
               <motion.div
@@ -59,8 +59,10 @@ const Carousel = () => {
                 transition={{ duration: 0.4 }}
               >
                 {/* VISIBLE scaled component */}
+                
                 <div className="w-full h-full max-w-[80vw] max-h-[90vh] flex justify-center items-center">
                   <div
+                  
                     className={`
                       w-full h-full
                       scale-[0.4] sm:scale-[0.45] md:scale-[0.5]

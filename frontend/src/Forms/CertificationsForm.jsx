@@ -1,8 +1,11 @@
-import React, { useState, forwardRef, useImperativeHandle } from "react";
+import React, { useState, forwardRef, useImperativeHandle, use } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import {useCreateUserDetailsMutation} from "../slices/userDetailsSlice";
 const CertificationForm = forwardRef(
   ({ certification, handleChange, handleAdd, handleRemove }, ref) => {
-    const [errors, setErrors] = useState({});
+    const { formData: reduxFormData } = useSelector((state) => state.resume);
 
+    const [errors, setErrors] = useState({});
     useImperativeHandle(ref, () => ({
       validate: () => {
         const newErrors = {};
@@ -23,7 +26,21 @@ const CertificationForm = forwardRef(
         return Object.keys(newErrors).length === 0;
       },
     }));
+    const { userInfo } = useSelector((state) => state.auth);
+    const [createUserDetails] = useCreateUserDetailsMutation();
 
+const submitHandler = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await createUserDetails({
+        ...reduxFormData,
+        user: userInfo._id,
+      }).unwrap();
+      console.log("User details saved!", res);
+    } catch (err) {
+      console.error("Failed to save user details:", err);
+    }
+  }
     return (
       <div className="mt-15 bg-gray-100 py-10 flex justify-center px-4 ">
         <div className="bg-white max-w-4xl w-full shadow-lg rounded-lg p-8">
@@ -117,7 +134,7 @@ const CertificationForm = forwardRef(
             Add Another Certification
           </button>
         </div>
-        
+        <button onClick={submitHandler}> submitHandler</button>
       </div>
     );
   }
