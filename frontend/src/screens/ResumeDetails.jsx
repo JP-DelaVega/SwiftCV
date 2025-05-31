@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import PersonalInformationForms from "../Forms/PersonalInformationsForm";
 import ProfessionalSummaryForm from "../Forms/ProfessionalSummaryForm";
@@ -6,6 +6,7 @@ import EducationForm from "../Forms/EducationForm";
 import CertificationForm from "../Forms/CertificationsForm";
 import ResumeList from "./ResumeList";
 import { useSelector, useDispatch } from "react-redux";
+import { useGetUserDetailsByUserIdQuery } from "../slices/userDetailsSlice.js";
 import {
   updatePersonalInfo,
   updateSkills,
@@ -18,33 +19,50 @@ import {
   updateCertification,
   addCertification,
   removeCertification,
+  setFormData, // if you created this action
 } from "../slices/slice";
 
 const ResumeDetails = () => {
-  const [activeTab, setActiveTab] = useState(0);
-  const [formData, setFormData] = useState({
-    personalInformation: { firstName: "", lastName: "", email: "", phone: "" },
-    professionalSummary: [
-      {
-        jobTitle: "",
-        company: "",
-        startDate: "",
-        endDate: "",
-        description: "",
-        summary: "",
-      },
-    ],
-    skills: [],
-    education: [{ degree: "", institution: "", startDate: "", endDate: "" }],
-    certifications: [{ name: "", institution: "", date: "" }],
-  });
-  const { formData: reduxFormData } = useSelector((state) => state.resume);
   const dispatch = useDispatch();
+
+  // Hooks must be here, inside component body
+  const { userInfo } = useSelector((state) => state.auth);
+  const { data, isLoading, error } = useGetUserDetailsByUserIdQuery(userInfo._id);
+
+  // Get redux form data
+  const { formData: reduxFormData } = useSelector((state) => state.resume);
+
+  const [activeTab, setActiveTab] = useState(0);
 
   const personalRef = useRef();
   const professionalRef = useRef();
   const educationRef = useRef();
   const certificationRef = useRef();
+
+ const blankUserDetails = {
+  personalInformation: {
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+  },
+  professionalSummary: [],
+  skills: [],
+  education: [],
+  certifications: [],
+};
+
+useEffect(() => {
+  if (data && data.data) {
+    dispatch(setFormData(data.data)); // update Redux form with fetched data
+  } else {
+    dispatch(setFormData(blankUserDetails)); // dispatch blank if no data
+  }
+}, [data, dispatch]);
+  // ... rest of your handlers and component logic
+
+  if (isLoading) return <p>Loading user details...</p>;
+  if (error) return <p>Error loading user details</p>;
 
   const validateCurrentStep = async () => {
     let isValid = true;
@@ -155,7 +173,7 @@ const ResumeDetails = () => {
           handleRemove={handleRemoveCertification}
         />
       )}
-      {activeTab === 4 && <ResumeList formData={formData} />}
+      {activeTab === 4 && <ResumeList formData={reduxFormData} />}
 
       <div className="flex justify-center mb-4">
         <div className="flex justify-between bg-gray-100 w-full max-w-4xl">

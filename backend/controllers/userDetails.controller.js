@@ -44,6 +44,23 @@ export const getUserDetailsById = (req, res) => {
     });
 };
 
+export const getUserDetailsByUserId = async (req, res) => {
+  const userId = req.params.id;
+
+  try {
+    const userDetails = await UserDetails.findOne({ user: userId });
+
+    // If no details found, return success with empty data (null or {})
+    if (!userDetails) {
+      return res.status(200).json({ success: true, data: null }); // or data: {}
+    }
+
+    res.status(200).json({ success: true, data: userDetails });
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Error fetching user details by userId', error });
+  }
+};
+
 export const createUserDetails = (req, res) => {
     const userDetails = req.body;
     // Here you would typically save the userDetails to your database
