@@ -1,6 +1,5 @@
 // src/screens/ResumeTemplate2.jsx
 
-import React from "react";
 import "../styles/resume-color.css";
 import { useSelector } from "react-redux";
 import { formatDate } from "../utils/date.js";
@@ -8,8 +7,8 @@ import { formatDate } from "../utils/date.js";
 function ResumeTemplate_2() {
   const { formData: reduxFormData } = useSelector((state) => state.resume);
   return (
-    <div className="bg-gray-100 min-h-[150vh] py-10 px-4 flex justify-center">
-      <div className="bg-white max-w-6xl w-full shadow-lg rounded-lg overflow-hidden grid grid-cols-1 md:grid-cols-3">
+    <div className="bg-gray-100 min-h-screen py-10 px-4 flex justify-center">
+      <div className="bg-white max-w-4xl w-full shadow-lg rounded-lg overflow-hidden grid grid-cols-1 md:grid-cols-3">
         {/* Left Side */}
         <div className="bg-gray-800 text-white p-6 md:col-span-1 flex flex-col justify-between">
           {/* Profile */}

@@ -2,31 +2,36 @@ import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
 
 export const exportComponent = (node, filename = "download.pdf") => {
-    if (!node) {
-      console.error("No DOM node provided.");
-      return;
-    }
-  
-    html2canvas(node, { scale: 2 }).then((canvas) => {
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF("p", "mm", "a4");
-  
-      const imgProps = pdf.getImageProperties(imgData);
-      const pdfPageWidth = pdf.internal.pageSize.getWidth();
-      const pdfPageHeight = pdf.internal.pageSize.getHeight();
-  
-      // Calculate height to maintain aspect ratio
-      let pdfWidth = pdfPageWidth;
-      let pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-      
-      // If the height is bigger than PDF page height, scale it down
-      if (pdfHeight > pdfPageHeight) {5
-        pdfHeight = pdfPageHeight;
-        pdfWidth = (imgProps.width * pdfHeight) / imgProps.height;
-      }
-  
-      pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-      pdf.save(filename);
+  if (!node) {
+    console.error("No DOM node provided.");
+    return;
+  }
+
+  html2canvas(node, {
+    scale: 3,
+    useCORS: true,
+    allowTaint: true,
+    backgroundColor: null,
+    logging: false,
+    scrollY: -window.scrollY,
+  }).then((canvas) => {
+    const imgData = canvas.toDataURL("image/png");
+
+    const imgWidth = canvas.width;
+    const imgHeight = canvas.height;
+
+    // Convert pixel size to mm (1 px = 0.264583 mm)
+    const pdfWidth = imgWidth * 0.264583;
+    const pdfHeight = imgHeight * 0.264583;
+
+    // Create PDF with same size as canvas
+    const pdf = new jsPDF({
+      orientation: pdfWidth > pdfHeight ? "l" : "p",
+      unit: "mm",
+      format: [pdfWidth, pdfHeight],
     });
-  };
-  
+
+    pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+    pdf.save(filename);
+  });
+};

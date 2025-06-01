@@ -30,7 +30,10 @@ const Carousel = () => {
 
   const next = () => setIndex((prev) => (prev + 1) % templateComponents.length);
   const prev = () =>
-    setIndex((prev) => (prev - 1 + templateComponents.length) % templateComponents.length);
+    setIndex(
+      (prev) =>
+        (prev - 1 + templateComponents.length) % templateComponents.length
+    );
 
   const CurrentTemplate = templateComponents[index];
 
@@ -46,8 +49,8 @@ const Carousel = () => {
   return (
     <>
       <Navbar />
-      <div className=" relative w-full h-screen flex justify-center items-center">
-        <div className=" w-full h-full flex justify-center items-center relative mt-12">
+      <div className=" relative w-full h-[97vh] flex justify-center items-center">
+        <div className=" w-[45vw] h-full flex justify-center items-center relative mt-12">
           <div className="w-full h-full flex justify-center items-center transition-filter duration-300">
             <AnimatePresence mode="wait">
               <motion.div
@@ -59,13 +62,13 @@ const Carousel = () => {
                 transition={{ duration: 0.4 }}
               >
                 {/* VISIBLE scaled component */}
-                
+
                 <div className="w-full h-full max-w-[80vw] max-h-[90vh] flex justify-center items-center">
                   <div
-                  
                     className={`
                       w-full h-full
-                      scale-[0.4] sm:scale-[0.45] md:scale-[0.5]
+                     scale-[0.6] sm:scale-[0.7] md:scale-[0.8]
+
                       origin-center pointer-events-auto
                       ${hovered ? "filter blur-sm" : ""}
                     `}
@@ -107,19 +110,26 @@ const Carousel = () => {
               </button>
             </div>
           )}
-        </div>
-
-        {/* Navigation Arrows */}
+          {/* Navigation Arrows */}
         <div className="absolute top-1/2 left-2 -translate-y-1/2 z-10">
-          <button onClick={prev} className="p-2 rounded-full shadow hover:bg-gray-200">
+          <button
+            onClick={prev}
+            className="p-3 rounded-full shadow hover:bg-gray-200 bg-blue-300"
+          >
             <ChevronLeft />
           </button>
         </div>
         <div className="absolute top-1/2 right-2 -translate-y-1/2 z-10">
-          <button onClick={next} className="p-2 rounded-full shadow hover:bg-gray-200">
+          <button
+            onClick={next}
+            className="p-3 rounded-full shadow hover:bg-gray-200  bg-blue-300"
+          >
             <ChevronRight />
           </button>
         </div>
+        </div>
+
+        
       </div>
     </>
   );

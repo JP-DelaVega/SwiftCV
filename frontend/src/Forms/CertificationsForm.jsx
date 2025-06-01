@@ -25,8 +25,6 @@ const CertificationForm = forwardRef(
       },
     }));
 
-
-
     return (
       <div className=" bg-gray-100 py-10 flex justify-center px-4 ">
         <div className="bg-white max-w-4xl w-full shadow-lg rounded-lg p-8">

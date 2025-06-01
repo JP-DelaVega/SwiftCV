@@ -1,11 +1,10 @@
-import React from "react";
 
 const Wizard = ({ activeStep }) => {
   const steps = [
     "Personal Info",
     "Professional Summary",
     "Education",
-    "Certifications",
+    "Certification",
     "Templates",
   ];
 

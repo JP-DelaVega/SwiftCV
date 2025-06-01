@@ -14,8 +14,8 @@ import {
 function ResumeTemplate_7() {
   const { formData: reduxFormData } = useSelector((state) => state.resume);
   return (
-    <div className="bg-gray-50 min-h-screen flex justify-center py-16 px-4">
-      <div className="bg-white w-full max-w-3xl shadow-lg rounded-lg p-8">
+    <div className=" min-h-screen flex justify-center py-16 px-4">
+      <div className="bg-white w-full max-w-4xl shadow-lg rounded-lg p-8">
         {/* Header Section */}
         <div className="text-center mb-8">
           {/* Image commented out */}

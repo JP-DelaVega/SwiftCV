@@ -1,6 +1,5 @@
 // src/screens/ResumeTemplate_5.jsx
 
-import React from "react";
 import { useSelector } from "react-redux";
 import { formatDate } from "../utils/date.js";
 import {
@@ -14,8 +13,8 @@ import {
 function ResumeTemplate_5() {
   const { formData: reduxFormData } = useSelector((state) => state.resume);
   return (
-    <div className="bg-gray-50 min-h-screen py-8 px-6 flex justify-center">
-      <div className="bg-white max-w-3xl w-full shadow-lg rounded-lg overflow-hidden">
+    <div className="bg-white min-h-screen py-8 px-6 flex justify-center">
+      <div className="bg-white max-w-4xl w-full shadow-lg rounded-lg overflow-hidden">
         {/* Header Section */}
         <div className="p-6 border-b-2 border-gray-200 flex justify-between items-center">
           <div>

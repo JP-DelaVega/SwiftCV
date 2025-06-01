@@ -14,7 +14,7 @@ import {
 function ResumeTemplate_3() {
   const { formData: reduxFormData } = useSelector((state) => state.resume);
   return (
-    <div className="bg-gray-50 min-h-[160vh] py-10 px-8 flex justify-center">
+    <div className="min-h-screen py-10 px-8 flex justify-center">
       <div className="bg-white max-w-4xl w-full shadow-lg rounded-lg p-12 flex flex-col md:flex-row">
         {/* Left Section (Contact Info) */}
         <div className="w-full md:w-1/3 bg-gray-100 p-6 rounded-lg mb-8 md:mb-0">
@@ -22,7 +22,7 @@ function ResumeTemplate_3() {
             <h1 className="text-4xl font-semibold text-gray-800">{`${reduxFormData.personalInformation.firstName} ${reduxFormData.personalInformation.lastName}`}</h1>
           </div>
 
-          <div className="flex flex-col items-center text-gray-600 space-y-4">
+          <div className="flex flex-col text-gray-600 space-y-4">
             <div className="flex items-center text-sm">
               <FaPhoneAlt className="mr-2 text-gray-500" />
               <span>{`${reduxFormData.personalInformation.phone}`}</span>
@@ -74,13 +74,13 @@ function ResumeTemplate_3() {
           <section className="mb-10">
             {reduxFormData.education.map((edu, index) => (
               <div key={index}>
-                <h2 className="text-2xl font-semibold text-gray-700 mb-4">
+                <h3 className="text-1xl font-semibold text-gray-800 mb-4">
                   {edu.degree}
-                </h2>
-                <h3 className="text-xl font-semibold text-gray-800">
+                </h3>
+                <p className="text-gray-500 text-sm">
                   {edu.institution} | Graduated: {formatDate(edu.startDate)} -{" "}
                   {formatDate(edu.endDate)}
-                </h3>
+                </p>
               </div>
             ))}
           </section>

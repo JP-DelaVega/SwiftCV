@@ -16,8 +16,8 @@ import {
 function ResumeTemplate_6() {
   const { formData: reduxFormData } = useSelector((state) => state.resume);
   return (
-    <div className="bg-gray-50 min-h-screen flex justify-center py-10">
-      <div className="bg-white w-full max-w-5xl shadow-xl rounded-lg overflow-hidden flex flex-col md:flex-row">
+    <div className=" min-h-screen flex justify-center py-10">
+      <div className="bg-white w-full max-w-4xl shadow-xl rounded-lg overflow-hidden flex flex-col md:flex-row">
         {/* Left Sidebar */}
         <div className="bg-blue-800 text-white w-full md:w-1/3 py-10 px-6 flex flex-col items-center">
           {/*<img 

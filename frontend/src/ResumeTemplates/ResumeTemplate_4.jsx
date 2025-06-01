@@ -1,8 +1,8 @@
 // src/screens/ResumeTemplate_4.jsx
 
-import React from "react";
 import { useSelector } from "react-redux";
 import { formatDate } from "../utils/date.js";
+import "../styles/resume-color.css";
 import {
   FaPhoneAlt,
   FaEnvelope,
@@ -14,8 +14,8 @@ import {
 function ResumeTemplate_4() {
   const { formData: reduxFormData } = useSelector((state) => state.resume);
   return (
-    <div className="bg-gray-50 min-h-[160vh] flex justify-center py-12">
-      <div className="flex w-full max-w-5xl bg-white shadow-2xl rounded-lg">
+    <div className=" min-h-screen flex justify-center py-12">
+      <div className="flex w-full max-w-4xl bg-white shadow-2xl rounded-lg">
         {/* Sidebar */}
         <div className="w-1/4 bg-gray-800 text-white p-8 flex flex-col items-center">
           {/* <img 
@@ -25,7 +25,7 @@ function ResumeTemplate_4() {
           />*/}
           <h1 className="text-3xl font-semibold text-center mb-4">{`${reduxFormData.personalInformation.firstName} ${reduxFormData.personalInformation.lastName}`}</h1>
 
-          <div className="flex flex-col items-center text-sm space-y-4">
+          <div className="flex flex-col text-sm space-y-4">
             <div className="flex items-center">
               <FaPhoneAlt className="mr-2 text-gray-400" />
               <span>{`Phone: ${reduxFormData.personalInformation.phone}`}</span>
@@ -85,10 +85,10 @@ function ResumeTemplate_4() {
             <div className="bg-gray-100 p-6 rounded-lg shadow-md">
               {reduxFormData.education.map((edu, index) => (
                 <div key={index}>
-                  <h3 className="text-2xl font-semibold text-gray-700 mb-4">
+                  <h3 className="text-1xl font-semibold text-gray-800 mb-4">
                     {edu.degree}
                   </h3>
-                  <p className="text-xl font-semibold text-gray-800">
+                  <p className="text-gray-500 text-sm">
                     {edu.institution} | Graduated: {formatDate(edu.startDate)} -{" "}
                     {formatDate(edu.endDate)}
                   </p>
