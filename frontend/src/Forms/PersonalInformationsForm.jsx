@@ -59,7 +59,7 @@ const PersonalInformationForms = forwardRef(
     };
 
     return (
-      <div className="mt-15 bg-gray-100 py-10 flex justify-center px-4">
+      <div className=" bg-gray-100 py-10 flex justify-center px-4">
         <div className="bg-white max-w-4xl w-full shadow-lg rounded-lg p-8 space-y-6">
           <h1 className="text-3xl font-bold text-gray-800 text-center mb-6">
             Personal Information

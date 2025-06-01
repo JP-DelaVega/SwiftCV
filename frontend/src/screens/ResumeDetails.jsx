@@ -1,13 +1,20 @@
 import React, { useState, useRef, useEffect } from "react";
+import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import Wizard from "../components/Wizard";
 import PersonalInformationForms from "../Forms/PersonalInformationsForm";
 import ProfessionalSummaryForm from "../Forms/ProfessionalSummaryForm";
 import EducationForm from "../Forms/EducationForm";
 import CertificationForm from "../Forms/CertificationsForm";
 import ResumeList from "./ResumeList";
+import { toast } from "react-toastify";
+import LoadingBar from "../components/LoadingBar";
 import { useSelector, useDispatch } from "react-redux";
-import { useGetUserDetailsByUserIdQuery } from "../slices/userDetailsSlice.js";
-import {useCreateUserDetailsMutation} from "../slices/userDetailsSlice";
+import {
+  useGetUserDetailsByUserIdQuery,
+  useCreateUserDetailsMutation,
+  useUpdateUserDetailsMutation,
+} from "../slices/userDetailsSlice.js";
 import {
   updatePersonalInfo,
   updateSkills,
@@ -34,9 +41,10 @@ const ResumeDetails = () => {
 
   // Get redux form data
   const { formData: reduxFormData } = useSelector((state) => state.resume);
-
+  const [createUserDetails] = useCreateUserDetailsMutation();
+  const [updateUserDetails] = useUpdateUserDetailsMutation();
   const [activeTab, setActiveTab] = useState(0);
-
+  const [showResumeList, setShowResumeList] = useState(false);
   const personalRef = useRef();
   const professionalRef = useRef();
   const educationRef = useRef();
@@ -62,7 +70,16 @@ const ResumeDetails = () => {
     education: [{ degree: "", institution: "", startDate: "", endDate: "" }],
     certifications: [{ name: "", institution: "", date: "" }],
   };
+  useEffect(() => {
+    if (activeTab === 4) {
+      setShowResumeList(false); // reset on entry
+      const timer = setTimeout(() => {
+        setShowResumeList(true);
+      }, 1500); // show resume list after 5 seconds
 
+      return () => clearTimeout(timer);
+    }
+  }, [activeTab]);
   useEffect(() => {
     if (data && data.data) {
       dispatch(setFormData(data.data)); // update Redux form with fetched data
@@ -145,12 +162,42 @@ const ResumeDetails = () => {
     dispatch(removeCertification(index));
   };
 
-  const handleSaveorUpdate = () => {
-
+  const handleSaveorUpdate = async (e) => {
+    if (data) {
+      // If data exists, update it
+      try {
+        console.log(reduxFormData);
+        const res = await updateUserDetails({
+          data: reduxFormData,
+          id: userInfo._id,
+        }).unwrap();
+        console.log("User details updated!", res);
+      } catch (err) {
+        console.error("Failed to update user details:", err);
+      }
+    } else {
+      try {
+        const res = await createUserDetails({
+          ...reduxFormData,
+          id: userInfo._id,
+        }).unwrap();
+        console.log("User details saved!", res);
+      } catch (err) {
+        console.error("Failed to save user details:", err);
+      }
+    }
+    const valid = await validateCurrentStep();
+    if (valid) setActiveTab((prev) => Math.min(prev + 1, 4));
+    toast.success(
+      data
+        ? "User details updated successfully!"
+        : "User details saved successfully!"
+    );
   };
   return (
     <>
       <Navbar />
+      {activeTab !== 4 && <Wizard activeStep={activeTab} />};
       {activeTab === 0 && (
         <PersonalInformationForms
           ref={personalRef}
@@ -186,35 +233,49 @@ const ResumeDetails = () => {
           handleRemove={handleRemoveCertification}
         />
       )}
-      {activeTab === 4 && <ResumeList formData={reduxFormData} />}
+      {activeTab === 4 &&
+        (showResumeList ? (
+          <ResumeList formData={reduxFormData} />
+        ) : (
+          <LoadingBar />
+        ))}
+      <div className="flex justify-center mb-6">
+        <div className="flex justify-between bg-gray-100 w-full max-w-4xl px-4 py-2 gap-2">
+          {/* Back Button */}
+          {activeTab <= 0 ? (
+            <Link
+              to="/"
+              className="px-4 py-2 rounded bg-gray-300 text-gray-700 hover:bg-gray-400 transition"
+            >
+              Back to Homepage
+            </Link>
+          ) : (
+            <button
+              onClick={prevTab}
+              className="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400 transition"
+            >
+              Back
+            </button>
+          )}
 
-      <div className="flex justify-center mb-4">
-        <div className="flex justify-between bg-gray-100 w-full max-w-4xl">
-          <button
-            onClick={prevTab}
-            disabled={activeTab <= 0}
-            className={`px-4 py-2 rounded transition 
-    ${
-      activeTab <= 0
-        ? "bg-gray-200 text-gray-500 cursor-not-allowed"
-        : "bg-gray-300 hover:bg-gray-400"
-    }`}
-          >
-            Back
-          </button>
+          {/* Conditionally Render Buttons */}
+          {activeTab < 3 && (
+            <button
+              onClick={nextTab}
+              className="px-4 py-2 rounded bg-blue-500 text-white hover:bg-blue-600"
+            >
+              Next
+            </button>
+          )}
 
-          <button
-            onClick={nextTab}
-            disabled={activeTab >= 4}
-            className={`px-4 py-2 rounded transition 
-    ${
-      activeTab >= 4
-        ? "bg-blue-200 text-blue-500 cursor-not-allowed"
-        : "bg-blue-500 text-white hover:bg-blue-600"
-    }`}
-          >
-            Next
-          </button>
+          {activeTab === 3 && (
+            <button
+              onClick={handleSaveorUpdate}
+              className="px-4 py-2 rounded bg-green-500 text-white hover:bg-green-600"
+            >
+              {data ? "Update" : "Save"}
+            </button>
+          )}
         </div>
       </div>
     </>

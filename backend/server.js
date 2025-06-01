@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser';
 import connectDB from './config/db.js';
 import userDetailsRoutes from './routes/userDetails.Route.js';
 import userRoutes from './routes/user.route.js';
+import chatRoute from './ChatGpt/ChatGptApi.js';
 import cors from 'cors';
 dotenv.config();
 const app = express();
@@ -20,6 +21,7 @@ app.use(express.urlencoded({ extended: true })); // allow express to parse URL-e
 app.use(cookieParser()); // allow express to parse cookies in the request
 app.use("/api/userDetails", userDetailsRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/chat",chatRoute);
 
 app.listen(port, () => {
     connectDB();

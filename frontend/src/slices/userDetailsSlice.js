@@ -17,14 +17,19 @@ export const userApiSlice = apiSlice.injectEndpoints({
       invalidatesTags: ["UserDetails"], // Invalidate the 'UserDetails' tag to refetch data
     }),
     updateUserDetails: builder.mutation({
-      query: (userDetails) => ({
-        url: "http://localhost:5000/api/userDetails",
-        method: "PUT",
-        body: userDetails,
+      query: ({ id, data }) => ({
+        url: `http://localhost:5000/api/userDetails/user/${id}`,
+        method: "PATCH",
+        body: data,
       }),
-      invalidatesTags: ["UserDetails"], // Invalidate the 'UserDetails' tag to refetch data
+      keepUnusedDataFor: 5,
     }),
   }),
 });
 
-export const { useGetUserDetailsQuery, useGetUserDetailsByUserIdQuery } = userApiSlice;
+export const {
+  useGetUserDetailsQuery,
+  useGetUserDetailsByUserIdQuery,
+  useCreateUserDetailsMutation,
+  useUpdateUserDetailsMutation,
+} = userApiSlice;

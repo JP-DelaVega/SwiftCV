@@ -1,5 +1,5 @@
 import express from 'express';
-import { getUserDetails, getUserDetailsByUserId, createUserDetails, deleteUserDetails } from '../controllers/userDetails.controller.js';
+import { getUserDetails, getUserDetailsByUserId, createUserDetails,updateUserDetails, deleteUserDetails } from '../controllers/userDetails.controller.js';
 
 
 
@@ -10,6 +10,8 @@ router.get('/', getUserDetails);
 router.get('/user/:id', getUserDetailsByUserId);
 
 router.delete('/:id', deleteUserDetails);
+
+router.patch('/user/:id', updateUserDetails)
 
 router.post('/', createUserDetails);
 

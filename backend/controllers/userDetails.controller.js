@@ -77,5 +77,37 @@ export const createUserDetails = (req, res) => {
     }
 };
 
+export const updateUserDetails = async (req, res) => {
+  const userDetails = req.body;
+
+  if (!userDetails || !userDetails.user) {
+    return res.status(400).json({ message: 'User details and user ID are required' });
+  }
+
+  try {
+    // Try to update only if it already exists
+    const updatedUserDetails = await UserDetails.findOneAndUpdate(
+      { user: userDetails.user }, // Match by user ID
+      userDetails,
+      { new: true } // Return the updated document, but don't create if missing
+    );
+
+    if (!updatedUserDetails) {
+      return res.status(404).json({ message: 'User details not found. Cannot update non-existing record.' });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: 'User details updated successfully',
+      data: updatedUserDetails,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: 'Error updating user details',
+      error: error.message,
+    });
+  }
+};
+
 
 

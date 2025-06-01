@@ -1,4 +1,4 @@
-import React from "react";
+import "./homepage.css";
 import resume from "../assets/resume.png";
 import { Link } from "react-router-dom";
 function Homepage() {
@@ -24,11 +24,13 @@ function Homepage() {
       {/* Less Rounded Button */}
 
       <Link
-        to="/ResumeDetails"
-        className="bg-white text-gray-800 font-semibold py-3 px-8 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 hover:scale-105"
-      >
-        Get Started
-      </Link>
+  to="/ResumeDetails"
+  className="burst-button bg-white text-gray-800 font-semibold py-3 px-8 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 hover:scale-105"
+>
+  Get Started
+</Link>
+
+
       
     </div>
   );
