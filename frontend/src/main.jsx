@@ -2,7 +2,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import App from "./App.jsx";
@@ -13,6 +13,7 @@ import PageNotFound from "./screens/PageNotFound.jsx";
 import ResumeDetails from "./screens/ResumeDetails.jsx";
 import Login from "./screens/Login.jsx";
 import Register from "./screens/Register.jsx";
+import UserProfile from "./screens/UserProfile.jsx";
 import ResumeTemplate_1 from "./ResumeTemplates/ResumeTemplate_1.jsx";
 import ResumeTemplate_2 from "./ResumeTemplates/ResumeTemplate_2.jsx";
 import ResumeTemplate_3 from "./ResumeTemplates/ResumeTemplate_3.jsx";
@@ -30,6 +31,11 @@ const router = createBrowserRouter([
   {
     path: "/Register",
     element: <Register />,
+    errorElement: <div>Oops! Something went wrong.</div>,
+  },
+  {
+    path: "/Profile",
+    element: <UserProfile />,
     errorElement: <div>Oops! Something went wrong.</div>,
   },
   {

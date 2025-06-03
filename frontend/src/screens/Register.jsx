@@ -17,7 +17,7 @@ const Register = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { userinfo } = useSelector((state) => state.auth);
-  const [Register, { isLoading }] = useRegisterMutation();
+  const [register, { isLoading }] = useRegisterMutation();
 
   const { search } = useLocation();
   const sp = new URLSearchParams(search);
@@ -35,7 +35,7 @@ const Register = () => {
       return;
     } else {
       try {
-        const res = await Register({ name, email, password:password.password }).unwrap();
+        const res = await register({ name, email, password:password.password }).unwrap();
         dispatch(setCredentials({ ...res }));
         toast.success("Register successful!");
         navigate(redirect);

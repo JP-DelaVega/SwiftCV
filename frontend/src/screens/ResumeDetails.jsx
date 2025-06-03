@@ -50,26 +50,6 @@ const ResumeDetails = () => {
   const educationRef = useRef();
   const certificationRef = useRef();
 
-  const blankUserDetails = {
-    personalInformation: {
-      firstName: "",
-      lastName: "",
-      email: "",
-      phone: "",
-    },
-    professionalSummary: [
-      {
-        jobTitle: "",
-        company: "",
-        startDate: "",
-        endDate: "",
-        description: "",
-      },
-    ],
-    skills: [],
-    education: [{ degree: "", institution: "", startDate: "", endDate: "" }],
-    certifications: [{ name: "", institution: "", date: "" }],
-  };
   useEffect(() => {
     if (activeTab === 4) {
       setShowResumeList(false); // reset on entry
@@ -81,6 +61,26 @@ const ResumeDetails = () => {
     }
   }, [activeTab]);
   useEffect(() => {
+    const blankUserDetails = {
+      personalInformation: {
+        firstName: "",
+        lastName: "",
+        email: "",
+        phone: "",
+      },
+      professionalSummary: [
+        {
+          jobTitle: "",
+          company: "",
+          startDate: "",
+          endDate: "",
+          description: "",
+        },
+      ],
+      skills: [],
+      education: [{ degree: "", institution: "", startDate: "", endDate: "" }],
+      certifications: [{ name: "", institution: "", date: "" }],
+    };
     if (data && data.data) {
       dispatch(setFormData(data.data)); // update Redux form with fetched data
     } else {
@@ -162,7 +162,7 @@ const ResumeDetails = () => {
     dispatch(removeCertification(index));
   };
 
-  const handleSaveorUpdate = async (e) => {
+  const handleSaveorUpdate = async () => {
     if (data) {
       // If data exists, update it
       try {

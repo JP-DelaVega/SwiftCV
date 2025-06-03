@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import connectDB from './config/db.js';
-import userDetailsRoutes from './routes/userDetails.Route.js';
+import userDetailsRoutes from './routes/userDetails.route.js';
 import userRoutes from './routes/user.route.js';
 import chatRoute from './ChatGpt/ChatGptApi.js';
 import cors from 'cors';

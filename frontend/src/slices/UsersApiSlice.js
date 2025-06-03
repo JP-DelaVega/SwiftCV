@@ -17,6 +17,23 @@ export const usersApiSlice = apiSlice.injectEndpoints({
                 body: data,
             }),
         }),
+        editUser: builder.mutation({
+            query: (data) => ({
+                url: `http://localhost:5000/api/users/profile/${data._id}`,
+                method: 'PUT',
+                body: data,
+            }),
+        }),
+        getUserProfile: builder.query({
+            query: () => ({
+              url: 'http://localhost:5000/api/users/profile',
+              method: 'GET',
+              // REMOVE custom headers if using httpOnly cookies for auth
+              // Let browser send the cookie automatically
+            }),
+            // Ensures cookies are sent with the request
+            credentials: 'include',
+          }),
         logout: builder.mutation({
             query: () => ({
                 url: 'http://localhost:5000/api/users/logout',
@@ -25,5 +42,5 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         }),
     }),
 });
- export const { useLoginMutation, useLogoutMutation, useRegisterMutation } = usersApiSlice;
+ export const { useLoginMutation, useLogoutMutation, useRegisterMutation, useEditUserMutation, useGetUserProfileQuery } = usersApiSlice;
  

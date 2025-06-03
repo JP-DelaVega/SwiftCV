@@ -72,20 +72,21 @@ const logoutUser = (req, res) => {
 // @route   GET /api/users/profile
 // @access  Private
 const getUserProfile = asyncHandler(async (req, res) => {
+  console.log('User ID:', req.user._id); // Debugging line to check user ID
   const user = await User.findById(req.user._id);
-
-  if (user) {
-    res.status(200).json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      isAdmin: user.isAdmin,
-    });
-  } else {
+  if (!user) {
     res.status(404);
     throw new Error('User not found');
   }
+
+  res.status(200).json({
+    _id: user._id,
+    name: user.name,
+    email: user.email,
+    isAdmin: user.isAdmin,
+  });
 });
+
 
 // @desc    Update user profile
 // @route   PUT /api/users/profile
@@ -145,11 +146,19 @@ const deleteUser = asyncHandler(async (req, res) => {
 // @desc    Get user by ID
 // @route   GET /api/users/:id
 // @access  Private/Admin
+
 const getUserById = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.params.id).select('-password');
+  const userId = req.params.id;
+
+  if (!userId.match(/^[0-9a-fA-F]{24}$/)) {
+    res.status(400);
+    throw new Error('Invalid user ID format');
+  }
+
+  const user = await User.findById(userId).select('-password');
 
   if (user) {
-    res.json(user);
+    res.status(200).json(user);
   } else {
     res.status(404);
     throw new Error('User not found');
