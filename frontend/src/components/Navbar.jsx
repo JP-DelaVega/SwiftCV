@@ -1,11 +1,11 @@
-import { useState } from 'react';
-import { UserCircle, ChevronDown } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import { useLogoutMutation }  from '../slices/UsersApiSlice';
-import { logout } from '../slices/authSlice';
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import { useState } from "react";
+import { UserCircle, ChevronDown } from "lucide-react";
+import { Link, NavLink } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { useLogoutMutation } from "../slices/UsersApiSlice";
+import { logout } from "../slices/authSlice";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 export default function Navbar() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -13,15 +13,14 @@ export default function Navbar() {
   const { userInfo } = useSelector((state) => state.auth);
   const [isDropdownOpen, setDropdownOpen] = useState(false);
 
-  const handleLogout = async() => {
+  const handleLogout = async () => {
     try {
       await logoutApiCall().unwrap();
       dispatch(logout());
-      navigate('/Login');
-      toast.success('Logout successful');
-    }
-    catch (error) {
-      toast.error('Logout failed:', error);
+      navigate("/Login");
+      toast.success("Logout successful");
+    } catch (error) {
+      toast.error("Logout failed:", error);
     }
   };
 
@@ -32,13 +31,38 @@ export default function Navbar() {
 
       {/* Navigation Links */}
       <div className="flex items-center space-x-8 relative">
-        <Link to="/" className="text-gray-600 hover:text-black transition text-md">
+        <NavLink
+          to="/"
+          className={({ isActive }) =>
+            isActive
+              ? "text-blue-600 font-semibold border-b-2 border-blue-600"
+              : "text-gray-700 hover:text-blue-600"
+          }
+        >
           Home
-        </Link>
+        </NavLink>
 
-        <Link to="/Templates" className="text-gray-600 hover:text-black transition text-md">
+        <NavLink
+          to="/Users"
+          className={({ isActive }) =>
+            isActive
+              ? "text-blue-600 font-semibold border-b-2 border-blue-600"
+              : "text-gray-700 hover:text-blue-600"
+          }
+        >
+          Users
+        </NavLink>
+
+        <NavLink
+          to="/Templates"
+          className={({ isActive }) =>
+            isActive
+              ? "text-blue-600 font-semibold border-b-2 border-blue-600"
+              : "text-gray-700 hover:text-blue-600"
+          }
+        >
           Resume Templates
-        </Link>
+        </NavLink>
 
         {/* Authenticated Dropdown */}
         {userInfo ? (

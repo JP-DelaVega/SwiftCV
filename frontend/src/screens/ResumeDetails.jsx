@@ -35,7 +35,7 @@ const ResumeDetails = () => {
 
   // Hooks must be here, inside component body
   const { userInfo } = useSelector((state) => state.auth);
-  const { data, isLoading, error } = useGetUserDetailsByUserIdQuery(
+  const { data, isLoading, error, refetch } = useGetUserDetailsByUserIdQuery(
     userInfo._id
   );
 
@@ -161,12 +161,10 @@ const ResumeDetails = () => {
   const handleRemoveCertification = (index) => {
     dispatch(removeCertification(index));
   };
-
   const handleSaveorUpdate = async () => {
-    if (data) {
-      // If data exists, update it
+    if (data?.data !== null) {
+      console.log("Updating existing user details");
       try {
-        console.log(reduxFormData);
         const res = await updateUserDetails({
           data: reduxFormData,
           id: userInfo._id,
@@ -176,10 +174,11 @@ const ResumeDetails = () => {
         console.error("Failed to update user details:", err);
       }
     } else {
+      console.log("Creating new user details");
       try {
         const res = await createUserDetails({
           ...reduxFormData,
-          id: userInfo._id,
+          user: userInfo._id,
         }).unwrap();
         console.log("User details saved!", res);
       } catch (err) {
@@ -189,10 +188,11 @@ const ResumeDetails = () => {
     const valid = await validateCurrentStep();
     if (valid) setActiveTab((prev) => Math.min(prev + 1, 4));
     toast.success(
-      data
+      data?.data !== null
         ? "User details updated successfully!"
         : "User details saved successfully!"
     );
+    refetch();
   };
   return (
     <>

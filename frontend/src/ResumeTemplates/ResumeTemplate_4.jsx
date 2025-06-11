@@ -10,29 +10,35 @@ import {
   FaGithub,
   FaLinkedin,
 } from "react-icons/fa";
+import { useGetUserDetailsByUserIdQuery } from "../slices/userDetailsSlice.js";
 
 function ResumeTemplate_4() {
-  const { formData: reduxFormData } = useSelector((state) => state.resume);
+  const { userInfo } = useSelector((state) => state.auth);
+  const { data, isLoading, error } = useGetUserDetailsByUserIdQuery(
+    userInfo._id
+  );
+  if (isLoading) return <p>Loading user details...</p>;
+  if (error) return <p>Error fetching user details: {error.message}</p>;
   return (
     <div className=" min-h-screen flex justify-center py-12">
       <div className="flex w-full max-w-4xl bg-white shadow-2xl rounded-lg">
         {/* Sidebar */}
-        <div className="w-1/4 bg-gray-800 text-white p-8 flex flex-col items-center">
+        <div className="w-2/5 bg-gray-800 text-white p-8 flex flex-col items-center">
           {/* <img 
             src="https://via.placeholder.com/150" 
             alt="Profile" 
             className="rounded-full w-36 h-36 mb-6 border-4 border-white"
           />*/}
-          <h1 className="text-3xl font-semibold text-center mb-4">{`${reduxFormData.personalInformation.firstName} ${reduxFormData.personalInformation.lastName}`}</h1>
+          <h1 className="text-2xl font-semibold text-center mb-4">{`${data?.data?.personalInformation.firstName} ${data?.data?.personalInformation.lastName}`}</h1>
 
           <div className="flex flex-col text-sm space-y-4">
             <div className="flex items-center">
               <FaPhoneAlt className="mr-2 text-gray-400" />
-              <span>{`Phone: ${reduxFormData.personalInformation.phone}`}</span>
+              <span>{`Phone: ${data?.data?.personalInformation.phone}`}</span>
             </div>
             <div className="flex items-center">
               <FaEnvelope className="mr-2 text-gray-400" />
-              <span>{`Email: ${reduxFormData.personalInformation.email}`}</span>
+              <span>{`Email: ${data?.data?.personalInformation.email}`}</span>
             </div>
           </div>
 
@@ -53,13 +59,13 @@ function ResumeTemplate_4() {
         </div>
 
         {/* Main Content */}
-        <div className="w-3/4 p-8 space-y-10">
+        <div className="w-3/5 p-8 space-y-10">
           {/* Work Experience */}
           <section>
             <h2 className="text-2xl font-semibold text-gray-800 mb-6">
               Work Experience
             </h2>
-            {reduxFormData.professionalSummary.map((job, index) => (
+            {data?.data?.professionalSummary.map((job, index) => (
               <div
                 key={index}
                 className="bg-gray-100 p-6 rounded-lg shadow-md mb-6"
@@ -83,7 +89,7 @@ function ResumeTemplate_4() {
               Education
             </h2>
             <div className="bg-gray-100 p-6 rounded-lg shadow-md">
-              {reduxFormData.education.map((edu, index) => (
+              {data?.data?.education.map((edu, index) => (
                 <div key={index}>
                   <h3 className="text-1xl font-semibold text-gray-800 mb-4">
                     {edu.degree}
@@ -103,7 +109,7 @@ function ResumeTemplate_4() {
               Skills
             </h2>
             <div className="flex flex-wrap gap-2 text-gray-600 text-sm">
-              {reduxFormData.skills.map((skill) => (
+              {data?.data?.skills.map((skill) => (
                 <span
                   key={skill}
                   className="bg-gray-200 rounded-full px-3 py-1"
@@ -120,7 +126,7 @@ function ResumeTemplate_4() {
               Certifications
             </h2>
             <ul className="list-disc list-inside text-gray-600 text-sm space-y-1">
-              {reduxFormData.certifications.map((cert, index) => (
+              {data?.data?.certifications.map((cert, index) => (
                 <li key={index}>
                   <strong>{cert.name}</strong> - {cert.institution} |{" "}
                   {cert.date}

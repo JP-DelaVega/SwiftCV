@@ -63,7 +63,6 @@ export const getUserDetailsByUserId = async (req, res) => {
 
 export const createUserDetails = (req, res) => {
     const userDetails = req.body;
-    // Here you would typically save the userDetails to your database
     if (!userDetails) {
         return res.status(400).json({ message: 'User details are required' });
     }
@@ -79,7 +78,6 @@ export const createUserDetails = (req, res) => {
 
 export const updateUserDetails = async (req, res) => {
   const userDetails = req.body;
-
   if (!userDetails || !userDetails.user) {
     return res.status(400).json({ message: 'User details and user ID are required' });
   }

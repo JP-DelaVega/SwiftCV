@@ -14,6 +14,7 @@ import ResumeDetails from "./screens/ResumeDetails.jsx";
 import Login from "./screens/Login.jsx";
 import Register from "./screens/Register.jsx";
 import UserProfile from "./screens/UserProfile.jsx";
+import UsersList from "./screens/UsersList.jsx";
 import ResumeTemplate_1 from "./ResumeTemplates/ResumeTemplate_1.jsx";
 import ResumeTemplate_2 from "./ResumeTemplates/ResumeTemplate_2.jsx";
 import ResumeTemplate_3 from "./ResumeTemplates/ResumeTemplate_3.jsx";
@@ -36,6 +37,11 @@ const router = createBrowserRouter([
   {
     path: "/Profile",
     element: <UserProfile />,
+    errorElement: <div>Oops! Something went wrong.</div>,
+  },
+  {
+    path: "/Users",
+    element: <UsersList />,
     errorElement: <div>Oops! Something went wrong.</div>,
   },
   {

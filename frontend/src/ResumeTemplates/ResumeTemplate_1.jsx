@@ -6,10 +6,8 @@ import { useGetUserDetailsByUserIdQuery } from "../slices/userDetailsSlice.js";
 function ResumeTemplate() {
   const { userInfo } = useSelector((state) => state.auth);
   const { data, isLoading, error } = useGetUserDetailsByUserIdQuery(userInfo._id);
-  //test
   if (isLoading) return <p>Loading user details...</p>;
   if (error) return <p>Error fetching user details: {error.message}</p>;
-console.log("UserDetails data:", data);
   return (
     <div className="min-h-screen py-10 flex justify-center px-4">
       <div className="max-w-4xl w-full shadow-lg rounded-lg p-8">

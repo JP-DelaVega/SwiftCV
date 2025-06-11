@@ -9,10 +9,10 @@ export const userApiSlice = apiSlice.injectEndpoints({
       keepUnusedDataFor: 5, // keep cache for 5 seconds (optional)
     }),
     createUserDetails: builder.mutation({
-      query: (userDetails) => ({
-        url: "http://localhost:5000/api/userDetails",
+      query: (data) => ({
+        url: "http://localhost:5000/api/userDetails/user",
         method: "POST",
-        body: userDetails,
+        body: data,
       }),
       invalidatesTags: ["UserDetails"], // Invalidate the 'UserDetails' tag to refetch data
     }),

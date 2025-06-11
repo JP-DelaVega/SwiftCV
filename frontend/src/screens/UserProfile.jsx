@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import {
-  useEditUserMutation,
+  useEditUserProfileMutation,
   useGetUserProfileQuery,
 } from "../slices/UsersApiSlice";
 import Navbar from "../components/Navbar";

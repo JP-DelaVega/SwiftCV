@@ -120,9 +120,45 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 // @route   GET /api/users
 // @access  Private/Admin
 const getUsers = asyncHandler(async (req, res) => {
-  const users = await User.find({});
-  res.json(users);
+  const page = Number(req.query.page) || 1;
+  const limit = Number(req.query.limit) || 6;
+  const search = req.query.search || "";
+  const role = req.query.role || "";
+  const status = req.query.status || "";
+
+  const keyword = {
+    $or: [
+      { name: { $regex: search, $options: "i" } },
+      { email: { $regex: search, $options: "i" } },
+      
+    ],
+  };
+
+  if (role === "admin") {
+    keyword.isAdmin = true;
+  } else if (role === "user") {
+    keyword.isAdmin = false;
+  }
+
+  if (status) {
+    keyword.isActive = status === true;
+  } else if (status === false) {
+    keyword.isActive = false;
+  }
+
+  const count = await User.countDocuments(keyword);
+  const users = await User.find(keyword)
+    .skip((page - 1) * limit)
+    .limit(limit).sort({ isActive: -1 });
+
+  res.json({
+    users,
+    currentPage: page,
+    totalPages: Math.ceil(count / limit),
+    totalUsers: count,
+  });
 });
+
 
 // @desc    Delete user
 // @route   DELETE /api/users/:id
@@ -174,6 +210,7 @@ const updateUser = asyncHandler(async (req, res) => {
     user.name = req.body.name || user.name;
     user.email = req.body.email || user.email;
     user.isAdmin = Boolean(req.body.isAdmin);
+    user.isActive = req.body.isActive !== undefined ? req.body.isActive : user.isActive;
 
     const updatedUser = await user.save();
 
@@ -181,6 +218,7 @@ const updateUser = asyncHandler(async (req, res) => {
       _id: updatedUser._id,
       name: updatedUser.name,
       email: updatedUser.email,
+      isActive: updatedUser.isActive,
       isAdmin: updatedUser.isAdmin,
     });
   } else {

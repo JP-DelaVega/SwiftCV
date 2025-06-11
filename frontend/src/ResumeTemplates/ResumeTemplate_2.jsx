@@ -1,11 +1,14 @@
 // src/screens/ResumeTemplate2.jsx
 
 import "../styles/resume-color.css";
-import { useSelector } from "react-redux";
 import { formatDate } from "../utils/date.js";
-
+import { useSelector } from "react-redux";
+import { useGetUserDetailsByUserIdQuery } from "../slices/userDetailsSlice.js";
 function ResumeTemplate_2() {
-  const { formData: reduxFormData } = useSelector((state) => state.resume);
+  const { userInfo } = useSelector((state) => state.auth);
+  const { data, isLoading, error } = useGetUserDetailsByUserIdQuery(userInfo._id);
+   if (isLoading) return <p>Loading user details...</p>;
+  if (error) return <p>Error fetching user details: {error.message}</p>;
   return (
     <div className="bg-gray-100 min-h-screen py-10 px-4 flex justify-center">
       <div className="bg-white max-w-4xl w-full shadow-lg rounded-lg overflow-hidden grid grid-cols-1 md:grid-cols-3">
@@ -13,12 +16,12 @@ function ResumeTemplate_2() {
         <div className="bg-gray-800 text-white p-6 md:col-span-1 flex flex-col justify-between">
           {/* Profile */}
           <div>
-            <h1 className="text-3xl font-bold">{`${reduxFormData.personalInformation.firstName} ${reduxFormData.personalInformation.lastName}`}</h1>
+            <h1 className="text-3xl font-bold">{`${data?.data?.personalInformation.firstName} ${data?.data?.personalInformation.lastName}`}</h1>
 
             {/* Contact Info */}
             <div className="mt-6 text-sm space-y-2">
-              <p>{`Email: ${reduxFormData.personalInformation.email}`}</p>
-              <p>{`Phone: ${reduxFormData.personalInformation.phone}`}</p>
+              <p>{`Email: ${data?.data?.personalInformation.email}`}</p>
+              <p>{`Phone: ${data?.data?.personalInformation.phone}`}</p>
             </div>
 
             {/* Skills */}
@@ -27,7 +30,7 @@ function ResumeTemplate_2() {
                 Skills
               </h2>
               <ul className="flex flex-wrap gap-2 text-sm text-gray-300">
-                {reduxFormData.skills.map((skill) => (
+                {data?.data?.skills.map((skill) => (
                   <li key={skill}>
                     <span className="bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm inline-block">
                       {skill}
@@ -43,7 +46,7 @@ function ResumeTemplate_2() {
                 Certifications
               </h2>
               <ul className="space-y-1 text-sm text-gray-300">
-                {reduxFormData.certifications.map((cert, index) => (
+                {data?.data?.certifications.map((cert, index) => (
                   <li key={index}>
                     <strong>{cert.name}</strong> - {cert.institution} |{" "}
                     {cert.date}
@@ -64,7 +67,7 @@ function ResumeTemplate_2() {
             <h2 className="text-2xl font-semibold text-gray-800 mb-4">
               Work Experience
             </h2>
-            {reduxFormData.professionalSummary.map((job, index) => (
+            {data?.data?.professionalSummary.map((job, index) => (
               <div key={index} className="mb-8">
                 <h3 className="text-lg font-bold text-gray-700">
                   {job.jobTitle}
@@ -85,7 +88,7 @@ function ResumeTemplate_2() {
               Education
             </h2>
             <div>
-              {reduxFormData.education.map((edu, index) => (
+              {data?.data?.education.map((edu, index) => (
                 <div key={index}>
                   <h3 className="text-lg font-bold text-gray-700">
                     {edu.degree}

@@ -10,9 +10,15 @@ import {
   FaGithub,
   FaLinkedin,
 } from "react-icons/fa";
+import { useGetUserDetailsByUserIdQuery } from "../slices/userDetailsSlice.js";
 
 function ResumeTemplate_7() {
-  const { formData: reduxFormData } = useSelector((state) => state.resume);
+  const { userInfo } = useSelector((state) => state.auth);
+  const { data, isLoading, error } = useGetUserDetailsByUserIdQuery(
+    userInfo._id
+  );
+  if (isLoading) return <p>Loading user details...</p>;
+  if (error) return <p>Error fetching user details: {error.message}</p>;
   return (
     <div className=" min-h-screen flex justify-center py-16 px-4">
       <div className="bg-white w-full max-w-4xl shadow-lg rounded-lg p-8">
@@ -25,7 +31,7 @@ function ResumeTemplate_7() {
             className="rounded-full w-32 h-32 mx-auto mb-4 border-4 border-blue-500"
           /> */}
 
-          <h1 className="text-3xl font-semibold text-gray-800 mb-2">{`${reduxFormData.personalInformation.firstName} ${reduxFormData.personalInformation.lastName}`}</h1>
+          <h1 className="text-3xl font-semibold text-gray-800 mb-2">{`${data?.data?.personalInformation.firstName} ${data?.data?.personalInformation.lastName}`}</h1>
 
           {/* GitHub and LinkedIn icons under name */}
           <div className="flex justify-center space-x-6">
@@ -52,11 +58,11 @@ function ResumeTemplate_7() {
           <ul className="space-y-2 text-gray-600">
             <li className="flex items-center">
               <FaPhoneAlt className="mr-2 text-blue-500" />
-              {`${reduxFormData.personalInformation.phone}`}
+              {`${data?.data?.personalInformation.phone}`}
             </li>
             <li className="flex items-center">
               <FaEnvelope className="mr-2 text-blue-500" />
-              {`${reduxFormData.personalInformation.email}`}
+              {`${data?.data?.personalInformation.email}`}
             </li>
           </ul>
         </div>
@@ -64,7 +70,7 @@ function ResumeTemplate_7() {
         <div className="mb-10">
           <h2 className="text-2xl font-semibold text-gray-800 mb-4">Skills</h2>
           <div className="flex flex-wrap gap-3 text-sm text-gray-600">
-            {reduxFormData.skills.map((skill) => (
+            {data?.data?.skills.map((skill) => (
               <span key={skill} className="bg-gray-200 rounded-full px-3 py-1">
                 {skill}
               </span>
@@ -77,7 +83,7 @@ function ResumeTemplate_7() {
             Work Experience
           </h2>
           <div className="space-y-6">
-            {reduxFormData.professionalSummary.map((job, index) => (
+            {data?.data?.professionalSummary.map((job, index) => (
               <div key={index} className="space-y-6">
                 <h3 className="text-xl font-semibold text-gray-800">
                   {job.jobTitle}
@@ -98,7 +104,7 @@ function ResumeTemplate_7() {
           <h2 className="text-2xl font-semibold text-gray-800 mb-4">
             Education
           </h2>
-          {reduxFormData.education.map((edu, index) => (
+          {data?.data?.education.map((edu, index) => (
             <div key={index} className="mb-8">
               <h3 className="text-xl font-semibold text-gray-800">
                 {edu.degree}
@@ -117,7 +123,7 @@ function ResumeTemplate_7() {
             Certifications
           </h2>
           <ul className="list-disc list-inside text-gray-600 space-y-2">
-            {reduxFormData.certifications.map((cert, index) => (
+            {data?.data?.certifications.map((cert, index) => (
               <li key={index}>
                 <strong>{cert.name}</strong> - {cert.institution} | {cert.date}
               </li>
