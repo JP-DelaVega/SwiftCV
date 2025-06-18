@@ -4,11 +4,14 @@ import {
   useDeleteUserMutation,
   useUpdateUserByIdMutation,
 } from "../slices/UsersApiSlice";
+import { useSelector } from "react-redux";
 import Navbar from "../components/Navbar";
 import Pagination from "../components/pagination";
 import { FaTrash, FaUndo } from "react-icons/fa";
 import { toast } from "react-toastify";
 function UsersList() {
+  const { userInfo } = useSelector((state) => state.auth);
+
   const [currentPage, setCurrentPage] = useState(1);
   const usersPerPage = 6;
 
@@ -61,108 +64,113 @@ function UsersList() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-[20px] flex flex-col items-center">
-      <Navbar />
+    <>
+      {!userInfo || !userInfo.isAdmin ? (
+        <div className="min-h-screen bg-gray-100 p-[20px] flex flex-col items-center">
+          <Navbar />
+          <div className="mt-[9vh] text-center">
+            <h1 className="text-2xl font-bold">User Management</h1>
+          </div>
+          <div className="mt-4 text-red-500">
+            You do not have permission to access this page.
+          </div>
+        </div>
+      ) : (
+        <div className="min-h-screen bg-gray-100 p-[20px] flex flex-col items-center">
+          <Navbar />
 
-      <div className="w-full max-w-3xl mt-[9vh] mb-6 flex flex-row justify-start items-start gap-4">
-        {/* Search Input */}
-        <input
-          type="text"
-          value={searchTerm}
-          onChange={handleSearchChange}
-          placeholder="Search by name or email"
-          className="w-full md:w-[60%] p-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
-        />
+          <div className="w-full max-w-3xl mt-[9vh] mb-6 flex flex-row justify-start items-start gap-4">
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={handleSearchChange}
+              placeholder="Search by name or email"
+              className="w-full md:w-[60%] p-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+            />
 
-        {/* Role Filter Dropdown */}
-        <select
-          value={roleFilter}
-          onChange={(e) => {
-            setRoleFilter(e.target.value);
-            setCurrentPage(1);
-          }}
-          className="w-full md:w-[35%] p-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
-        >
-          <option value="">All Roles</option>
-          <option value="admin">Admin</option>
-          <option value="user">User</option>
-        </select>
-        <select
-          value={roleFilter}
-          onChange={(e) => {
-            setRoleFilter(e.target.value);
-            setCurrentPage(1);
-          }}
-          className="w-full md:w-[25%] p-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
-        >
-          <option value="">All Status</option>
-          <option value="admin">Active</option>
-          <option value="user">Inactive</option>
-        </select>
-        <button
-          type="button"
-          onClick={() => {
-            setCurrentPage(1);
-            setSearchTerm("");
-            setRoleFilter("");
-          }}
-          disabled={isLoading}
-          className="w-16 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
-        >
-          Clear
-        </button>
-      </div>
-
-      {isLoading && <div className="text-center">Loading...</div>}
-      {error && (
-        <div className="text-center text-red-500">Error: {error.message}</div>
-      )}
-
-      <div className="flex flex-row items-start justify-start min-h-[70vh] min-w-[85vw] rounded p-4 text-l pt-[5vh]">
-        <ul className="flex flex-wrap">
-          {users.map((user) => (
-            <li
-              key={user.id}
-              className={`bg-white rounded m-2 p-4 shadow-md transition-shadow duration-300 min-h-[16vh] min-w-[17vw] ${
-                !user.isActive ? "opacity-50 text-gray-400" : "hover:shadow-lg"
-              }`}
+            <select
+              value={roleFilter}
+              onChange={(e) => {
+                setRoleFilter(e.target.value);
+                setCurrentPage(1);
+              }}
+              className="w-full md:w-[35%] p-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
             >
-              <div className="flex justify-between items-center mb-2">
-                <p className="text-lg font-semibold">{user.name}</p>
-                {user.isActive ? (
-                  <FaTrash
-                    className="text-red-500 hover:text-red-700 cursor-pointer"
-                    title="Delete User"
-                    onClick={() => handleUpdate(user)}
-                  />
-                ) : (
-                  <FaUndo
-                    className="text-green-500 hover:text-green-700 cursor-pointer"
-                    title="Recover User"
-                    onClick={() => handleUpdate(user)}
-                  />
-                )}
-              </div>
-              <p>Email: {user.email}</p>
-              <div>
-                Role:{" "}
-                <span className={user.isAdmin ? "text-red-500" : ""}>
-                  {user.isAdmin ? "Admin" : "User"}
-                </span>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </div>
+              <option value="">All Roles</option>
+              <option value="admin">Admin</option>
+              <option value="user">User</option>
+            </select>
 
-      <div className="mt-6">
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={setCurrentPage}
-        />
-      </div>
-    </div>
+            <button
+              type="button"
+              onClick={() => {
+                setCurrentPage(1);
+                setSearchTerm("");
+                setRoleFilter("");
+              }}
+              disabled={isLoading}
+              className="w-16 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
+            >
+              Clear
+            </button>
+          </div>
+
+          {isLoading && <div className="text-center">Loading...</div>}
+          {error && (
+            <div className="text-center text-red-500">
+              Error: {error.message}
+            </div>
+          )}
+
+          <div className="flex flex-row items-start justify-start min-h-[70vh] min-w-[85vw] rounded p-4 text-l pt-[5vh]">
+            <ul className="flex flex-wrap">
+              {users.map((user) => (
+                <li
+                  key={user.id}
+                  className={`bg-white rounded m-2 p-4 shadow-md transition-shadow duration-300 min-h-[16vh] min-w-[17vw] ${
+                    !user.isActive
+                      ? "opacity-50 text-gray-400"
+                      : "hover:shadow-lg"
+                  }`}
+                >
+                  <div className="flex justify-between items-center mb-2">
+                    <p className="text-lg font-semibold">{user.name}</p>
+                    {user.isActive ? (
+                      <FaTrash
+                        className="text-red-500 hover:text-red-700 cursor-pointer"
+                        title="Delete User"
+                        onClick={() => handleUpdate(user)}
+                      />
+                    ) : (
+                      <FaUndo
+                        className="text-green-500 hover:text-green-700 cursor-pointer"
+                        title="Recover User"
+                        onClick={() => handleUpdate(user)}
+                      />
+                    )}
+                  </div>
+                  <p>Email: {user.email}</p>
+                  <div>
+                    Role:{" "}
+                    <span className={user.isAdmin ? "text-red-500" : ""}>
+                      {user.isAdmin ? "Admin" : "User"}
+                    </span>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="mt-6">
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+            />
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 

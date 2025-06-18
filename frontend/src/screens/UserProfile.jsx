@@ -13,7 +13,7 @@ const UserProfile = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [editUser, { isLoading }] = useEditUserMutation();
+  const [editUser, { isLoading }] = useEditUserProfileMutation();
 
   // No argument here, and no array destructuring, just get data directly:
   const { data: userProfile, refetch } = useGetUserProfileQuery();

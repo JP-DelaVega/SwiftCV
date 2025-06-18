@@ -1,7 +1,7 @@
 import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
 
-export const exportComponent = (node, filename = "download.pdf") => {
+export const exportComponentToPDF = (node, filename = "download.pdf") => {
   if (!node) {
     console.error("No DOM node provided.");
     return;
@@ -33,5 +33,15 @@ export const exportComponent = (node, filename = "download.pdf") => {
 
     pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
     pdf.save(filename);
+  });
+};
+
+
+export const exportComponentToPNG = (node, filename = "resume.png") => {
+  html2canvas(node, { scale: 2 }).then((canvas) => {
+    const link = document.createElement("a");
+    link.download = filename;
+    link.href = canvas.toDataURL("image/png");
+    link.click();
   });
 };

@@ -19,8 +19,8 @@ function ResumeTemplate_5() {
   if (isLoading) return <p>Loading user details...</p>;
   if (error) return <p>Error fetching user details: {error.message}</p>;
   return (
-    <div className="bg-white min-h-screen py-8 px-6 flex justify-center">
-      <div className="bg-white max-w-4xl w-full shadow-lg rounded-lg overflow-hidden">
+    <div className="min-h-screen py-8 px-6 flex justify-center">
+      <div className="bg-white min-w-xl max-w-4xl w-full shadow-lg rounded-lg overflow-hidden mt-15">
         {/* Header Section */}
         <div className="p-6 border-b-2 border-gray-200 flex justify-between items-center">
           <div>
