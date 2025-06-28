@@ -1,4 +1,4 @@
-import "./homepage.css";
+import "./Homepage.css";
 import resume from "../assets/resume.png";
 import { Link } from "react-router-dom";
 function Homepage() {
