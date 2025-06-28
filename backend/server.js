@@ -1,28 +1,59 @@
-import dotenv from 'dotenv';
-import express from 'express';
-import cookieParser from 'cookie-parser';
-import connectDB from './config/db.js';
-import userDetailsRoutes from './routes/userDetails.route.js';
-import userRoutes from './routes/user.route.js';
-import chatRoute from './ChatGpt/ChatGptApi.js';
-import cors from 'cors';
+import dotenv from "dotenv";
+import express from "express";
+import cookieParser from "cookie-parser";
+import connectDB from "./config/db.js";
+import userDetailsRoutes from "./routes/userDetails.route.js";
+import userRoutes from "./routes/user.route.js";
+import chatRoute from "./ChatGpt/ChatGptApi.js";
+import cors from "cors";
+import path from "path";
+import { fileURLToPath } from "url";
+
+// Setup __dirname for ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Load environment variables
 dotenv.config();
+
+// Express app setup
 const app = express();
 const port = process.env.PORT || 5000;
-app.use(cors({
-    origin: 'http://localhost:5173', // or use '*' to allow all
-    credentials: true, // if you're using cookies or authorization headers
-  }));
 
+// CORS setup (adjust origin in production)
+app.use(
+  cors({
+    origin:
+      process.env.NODE_ENV === "production"
+        ? "swiftcv-hnezbdhvcwg2h6gu.southeastasia-01.azurewebsites.net" // <-- Replace with your deployed frontend URL
+        : "http://localhost:5173",
+    credentials: true,
+  })
+);
 
-app.use (express.json()); // allow express to parse JSON data in the request body
-app.use(express.urlencoded({ extended: true })); // allow express to parse URL-encoded data
+// Body parser
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-app.use(cookieParser()); // allow express to parse cookies in the request
+// Cookie parser
+app.use(cookieParser());
+
+// API routes
 app.use("/api/userDetails", userDetailsRoutes);
 app.use("/api/users", userRoutes);
-app.use("/api/chat",chatRoute);
+app.use("/api/chat", chatRoute);
 
+// Serve frontend in production
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "/frontend/build")));
+
+  app.get("*", (req, res) =>
+    res.sendFile(path.join(__dirname, "frontend", "build", "index.html"))
+  );
+}
+
+// Start server and connect to DB
 app.listen(port, () => {
-    connectDB();
+  connectDB();
+  console.log(`Server running on port ${port}`);
 });
