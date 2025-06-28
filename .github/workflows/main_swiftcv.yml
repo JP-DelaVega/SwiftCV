@@ -34,6 +34,11 @@ jobs:
           rm -rf ./frontend-build
           cp -r ./frontend/dist ./frontend-build
 
+      - name: Clean up unnecessary folders before deploy
+        run: |
+          rm -rf node_modules
+          rm -rf frontend/node_modules
+
       - name: Azure Login
         uses: azure/login@v1
         with:
@@ -45,3 +50,4 @@ jobs:
           app-name: SwiftCV
           slot-name: production
           package: .
+
