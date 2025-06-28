@@ -20,6 +20,7 @@ jobs:
 
       - name: Install backend dependencies
         run: npm install
+        working-directory: ./
 
       - name: Install frontend dependencies
         run: npm install
@@ -50,4 +51,3 @@ jobs:
           app-name: SwiftCV
           slot-name: production
           package: .
-
