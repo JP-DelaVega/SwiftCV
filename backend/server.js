@@ -25,7 +25,7 @@ app.use(
   cors({
     origin:
       process.env.NODE_ENV === "production"
-        ? "swiftcv-hnezbdhvcwg2h6gu.southeastasia-01.azurewebsites.net" // <-- Replace with your deployed frontend URL
+        ? "https://swiftcv-hnezbdhvcwg2h6gu.southeastasia-01.azurewebsites.net" // <-- Replace with your deployed frontend URL
         : "http://localhost:5173",
     credentials: true,
   })
@@ -38,6 +38,11 @@ app.use(express.urlencoded({ extended: true }));
 // Cookie parser
 app.use(cookieParser());
 
+// API routes
+app.use("/api/userDetails", userDetailsRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/chat", chatRoute);
+
 // Serve frontend in production
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "/frontend/dist")));
@@ -46,11 +51,6 @@ if (process.env.NODE_ENV === "production") {
     res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"))
   );
 }
-
-// API routes
-app.use("/api/userDetails", userDetailsRoutes);
-app.use("/api/users", userRoutes);
-app.use("/api/chat", chatRoute);
 
 // Start server and connect to DB
 app.listen(port, () => {
