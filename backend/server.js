@@ -38,19 +38,20 @@ app.use(express.urlencoded({ extended: true }));
 // Cookie parser
 app.use(cookieParser());
 
+
+// Serve frontend in production
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "..", "frontend", "dist")));
+
+  app.get("*", (req, res) =>
+    res.sendFile(path.join(__dirname, "..", "frontend", "dist", "index.html"))
+  );
+}
+
 // API routes
 app.use("/api/userDetails", userDetailsRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/chat", chatRoute);
-
-// Serve frontend in production
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "/frontend/dist")));
-
-  app.get("*", (req, res) =>
-    res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"))
-  );
-}
 
 // Start server and connect to DB
 app.listen(port, () => {
