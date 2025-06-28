@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -18,21 +18,31 @@ jobs:
         with:
           node-version: '18'
 
+      # Install backend dependencies
       - name: Install backend dependencies
         run: npm install
+        working-directory: ./
 
+      # Install frontend dependencies
       - name: Install frontend dependencies
         run: npm install
         working-directory: ./frontend
 
+      # Build frontend using Vite
       - name: Build frontend
         run: npm run build
         working-directory: ./frontend
 
+      # Login to Azure using service principal
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      # Deploy app to Azure App Service
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
         with:
-          app-name: SwiftCV
+          app-name: SwiftCV        # 🔁 Replace if your app name is different
           slot-name: production
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
           package: .
